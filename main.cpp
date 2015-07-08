@@ -6,6 +6,7 @@ int main(){
     while(window.running){
         window.clear();
         window.update();
+        
     }
     return 0;
 }

@@ -1,7 +1,7 @@
 #include <Utils.hpp>
 
 namespace Pix{
-    std::string read_file(const std::string &filePath){
+    std::string read_file(const std::string filePath){
         std::ifstream file(filePath);
         // TODO: check for error
         std::string fileContents = "", line;
