@@ -21,3 +21,6 @@ test:
 
 clean:
 	rm -rf bin obj
+
+docs:
+	doxygen
