@@ -12,8 +12,8 @@ namespace Pix{
             SDL_Window    *m_Window;
             SDL_GLContext m_Context;
             SDL_Event m_WindowEvent;
-            int m_Width, m_Height;
             const std::string m_Title;
+            int m_Width, m_Height;
             
             void f_Create();
         public:
