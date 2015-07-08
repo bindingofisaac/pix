@@ -1,4 +1,5 @@
 #include <Window.hpp>
+#include <Logger.hpp>
 
 int main(){
     Pix::Window window("test game", 1080, 720);
@@ -6,7 +7,6 @@ int main(){
     while(window.running){
         window.clear();
         window.update();
-        
     }
     return 0;
 }
