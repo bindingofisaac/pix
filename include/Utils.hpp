@@ -3,4 +3,6 @@
 #include <fstream>
 #include <string>
 
-std::string read_file(const std::string);
+namespace Pix{
+    std::string read_file(const std::string);
+}
