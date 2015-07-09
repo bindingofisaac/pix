@@ -21,10 +21,28 @@ namespace Pix{
 
         glShaderSource(vertex, 1, &vertSrcPtr, NULL);
         glCompileShader(vertex);
-        //TODO: error check
+
+        GLint result;
+        glGetShaderiv(vertex, GL_COMPILE_STATUS, &result);
+        if(result == GL_FALSE){
+            GLint length;
+            glGetShaderiv(vertex, GL_INFO_LOG_LENGTH, &length);
+            std::vector<char> error(length);
+            glGetShaderInfoLog(vertex, length, &length, &error[0]);
+            logger<<&error[0];
+        }
+
         glShaderSource(fragment, 1, & fragSrcPtr, NULL);
         glCompileShader(fragment);
-        //TODO: error check
+
+        glGetShaderiv(fragment, GL_COMPILE_STATUS, &result);
+        if(result == GL_FALSE){
+            GLint length;
+            glGetShaderiv(fragment, GL_INFO_LOG_LENGTH, &length);
+            std::vector<char> error(length);
+            glGetShaderInfoLog(fragment, length, &length, &error[0]);
+            logger<<&error[0];
+        }
 
         glAttachShader(program, vertex);
         glAttachShader(program, fragment);
