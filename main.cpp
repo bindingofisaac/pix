@@ -1,13 +1,10 @@
 #include <Window.hpp>
 #include <Shader.hpp>
 #include <Logger.hpp>
-#include <VertexBuffer.hpp>
-#include <IndexBuffer.hpp>
-#include <VertexArray.hpp>
+#include <Buffers.hpp>
 
 int main(){
     Pix::Window window("test game", 1080, 720);
-    window.setClearColor(1.0f, 1.0f, 0.0f, 1.0f);
     Pix::Shader shader("data/shaders/simple.vert", "data/shaders/simple.frag");
     shader.enable();
 
@@ -37,6 +34,7 @@ int main(){
 
     vao.bind();
     ibo.bind();
+    window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     while(window.running){
         window.clear();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
