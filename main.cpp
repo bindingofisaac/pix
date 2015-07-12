@@ -1,43 +1,22 @@
 #include <Window.hpp>
 #include <Shader.hpp>
 #include <Logger.hpp>
-#include <Buffers.hpp>
+#include <SimpleRenderer2D.hpp>
 
 int main(){
     Pix::Window window("test game", 1080, 720);
     Pix::Shader shader("data/shaders/simple.vert", "data/shaders/simple.frag");
-    shader.enable();
+    Pix::Renderable2D *sprite1 = new Pix::Renderable2D(glm::vec3(0    , 0    , 0), glm::vec2(0.5, 0.5), glm::vec4(1, 0, 0, 1));
+    Pix::Renderable2D *sprite2 = new Pix::Renderable2D(glm::vec3(-0.2f, -0.5f, 0), glm::vec2(0.2, 0.5), glm::vec4(1, 1, 1, 1));
+    Pix::SimpleRenderer2D renderer;
 
-    float vertices[] = {
-        -0.5f, +0.5f,
-        +0.5f, +0.5f,
-        +0.5f, -0.5f,
-        -0.5f, -0.5f
-    };
-
-    float color[] = {
-        1.0f, 1.0f, 1.0f,
-        1.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 1.0f
-    };
-
-    GLushort indices[] = { 0, 1, 2, 2, 3, 0 };
-
-    Pix::VertexArray  vao;
-    Pix::VertexBuffer *vbo = new Pix::VertexBuffer(vertices, 8, 2);
-    Pix::VertexBuffer *col = new Pix::VertexBuffer(color, 12, 3);
-    Pix::IndexBuffer  ibo(indices, 6);
-
-    vao.add(vbo, 0);
-    vao.add(col, 1);
-
-    vao.bind();
-    ibo.bind();
     window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    shader.enable();
     while(window.running){
         window.clear();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+        renderer.submit(sprite1);
+        renderer.submit(sprite2);
+        renderer.flush();
         window.update();
     }
     return 0;
