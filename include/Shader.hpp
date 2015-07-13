@@ -1,6 +1,9 @@
 #pragma once
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <Utils.hpp>
 
 namespace Pix{
@@ -15,6 +18,7 @@ namespace Pix{
             Shader(const std::string&, const std::string&);
             ~Shader();
 
+            void setUniformMat4(const std::string&, const glm::mat4&);
             void enable();
             void disable();
     };

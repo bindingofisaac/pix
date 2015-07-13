@@ -55,6 +55,10 @@ namespace Pix{
         return glGetUniformLocation(m_ShaderProgram, uniformName.c_str());
     }
 
+    void Shader::setUniformMat4(const std::string &name, const glm::mat4 &mat){
+        glUniformMatrix4fv(f_GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(mat));
+    }
+
     void Shader::enable(){
         glUseProgram(m_ShaderProgram);
     }

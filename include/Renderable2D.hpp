@@ -5,6 +5,11 @@
 #include <glm/glm.hpp>
 
 namespace Pix{
+    struct VertexData{
+        glm::vec3 vertex;
+        glm::vec4 color;
+    };
+
     class Renderable2D{
         protected:
             glm::vec3 m_Position;
