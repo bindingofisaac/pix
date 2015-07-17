@@ -43,6 +43,9 @@ namespace Pix{
         if(m_WindowEvent.type == SDL_QUIT){
             running = false;
         }
+
+        // Should be removed only for debugging 
+        SDL_GL_SetSwapInterval(0);
         SDL_GL_SwapWindow(m_Window);
     }
 }
