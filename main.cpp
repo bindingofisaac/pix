@@ -6,15 +6,18 @@
 #include <vector>
 #include <cstdlib>
 #include <Timer.hpp>
+#include <Layer2D.hpp>
 
 int main(){
     Pix::Window window("test game", 960, 540);
-    Pix::Shader shader("data/shaders/simple.vert", "data/shaders/simple.frag");
+
+    Pix::Shader *shader0 = new Pix::Shader("data/shaders/simple.vert", "data/shaders/simple.frag");
+    Pix::Shader *shader1 = new Pix::Shader("data/shaders/simple.vert", "data/shaders/simple.frag");
+
+    Pix::Layer2D layer0(shader0);
+    Pix::Layer2D layer1(shader1);
 
     std::vector<Pix::Renderable2D*> sprites;
-    Pix::BatchRenderer2D batch;
-
-    glm::mat4 projection = glm::ortho(0.0f, 16.0f, 9.0f, 0.0f);
 
     std::srand(time(NULL));
     for(float y = 0; y < 9.0f; y+=0.1f){
@@ -23,19 +26,19 @@ int main(){
         }
     }
 
-    window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    shader.enable();
+    for(int i=0;i<sprites.size();i++){
+        layer0.add(sprites[i]);
+    }
 
+    layer1.add(new Pix::Sprite(0.0f, 0.0f, 4.0f, 4.0f, glm::vec4(1, 1, 1, 1)));
+ 
+
+    window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     Pix::Timer timer;
     while(window.running){
         window.clear();
-        shader.setUniformMat4("projection", projection);
-        batch.begin();
-            for(int i=0;i<sprites.size();i++){
-                batch.submit(sprites[i]);
-            }
-            batch.flush();
-        batch.end();
+           layer0.render();
+           layer1.render();
         window.update();
         timer.logFPS();
     }
