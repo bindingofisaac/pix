@@ -50,23 +50,24 @@ namespace Pix{
     }
 
     void BatchRenderer2D::submit(const Renderable2D* renderable){
-        const glm::vec3 &position = renderable->getPosition();
+        const glm::vec4 &position = glm::vec4(renderable->getPosition(), 1);
         const glm::vec2 &size     = renderable->getSize();
         const glm::vec4 &color    = renderable->getColor();
+        glm::mat4 ts = m_TransformationStack.back();
 
-        m_Buffer->vertex = position;
+        m_Buffer->vertex = (ts * position).xyz();
         m_Buffer->color  = color;
         m_Buffer++;
 
-        m_Buffer->vertex = glm::vec3(position.x, position.y + size.y, position.z);
+        m_Buffer->vertex = (ts * glm::vec4(position.x, position.y + size.y, position.z, 1)).xyz();
         m_Buffer->color  = color;
         m_Buffer++;
 
-        m_Buffer->vertex = glm::vec3(position.x + size.x, position.y + size.y, position.z);
+        m_Buffer->vertex = (ts * glm::vec4(position.x + size.x, position.y + size.y, position.z, 1)).xyz();
         m_Buffer->color  = color;
         m_Buffer++;
 
-        m_Buffer->vertex = glm::vec3(position.x + size.x, position.y, position.z);
+        m_Buffer->vertex = (ts * glm::vec4(position.x + size.x, position.y, position.z, 1)).xyz();
         m_Buffer->color  = color;
         m_Buffer++;
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#define GLM_SWIZZLE
 #include <GL/glew.h>
 #include <Buffers.hpp>
 #include <glm/glm.hpp>

@@ -29,9 +29,11 @@ int main(){
     for(int i=0;i<sprites.size();i++){
         layer0.add(sprites[i]);
     }
+    layer1.add(new Pix::Sprite(0.0f, 0.0f, 4.0f, 4.0f, glm::vec4(1.0f, 1.0f, 1.0f, 0.51f)));
 
-    layer1.add(new Pix::Sprite(0.0f, 0.0f, 4.0f, 4.0f, glm::vec4(1, 1, 1, 1)));
- 
+
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     Pix::Timer timer;
