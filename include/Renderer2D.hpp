@@ -1,8 +1,12 @@
 #pragma once
 
-#include <Renderable2D.hpp>
+#define GLM_SWIZZLE
+#include <GL/glew.h>
+#include <Buffers.hpp>
+#include <glm/glm.hpp>
 
 namespace Pix{
+    class  Renderable2D;
     class Renderer2D{
         protected:
             std::vector<glm::mat4> m_TransformationStack;

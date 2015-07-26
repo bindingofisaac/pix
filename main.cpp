@@ -3,44 +3,27 @@
 #include <Logger.hpp>
 #include <Sprite.hpp>
 #include <BatchRenderer2D.hpp>
-#include <vector>
-#include <cstdlib>
 #include <Timer.hpp>
 #include <Layer2D.hpp>
+#include <Group.hpp>
 
 int main(){
+    Pix::Timer timer;
     Pix::Window window("test game", 960, 540);
 
     Pix::Shader *shader0 = new Pix::Shader("data/shaders/simple.vert", "data/shaders/simple.frag");
-    Pix::Shader *shader1 = new Pix::Shader("data/shaders/simple.vert", "data/shaders/simple.frag");
-
     Pix::Layer2D layer0(shader0);
-    Pix::Layer2D layer1(shader1);
+    Pix::Group *group0 = new Pix::Group(glm::translate(glm::mat4(1.0f), glm::vec3(5.0, 3.0, 0.0f))*glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0, 0, 1)));
 
-    std::vector<Pix::Renderable2D*> sprites;
+    group0->add(new Pix::Sprite(0, 0, 6, 3, glm::vec4(1,1,1,1)));
+    group0->add(new Pix::Sprite(0.5f, 0.5f, 5.0f, 2.0f, glm::vec4(1,0,0,1)));
 
-    std::srand(time(NULL));
-    for(float y = 0; y < 9.0f; y+=0.1f){
-        for(float x = 0; x < 16.0f; x+=0.1f){
-            sprites.push_back(new Pix::Sprite(x, y, 0.09f, 0.09f, glm::vec4(rand() % 1000 / 1000.0f,0,1,1)));
-        }
-    }
-
-    for(int i=0;i<sprites.size();i++){
-        layer0.add(sprites[i]);
-    }
-    layer1.add(new Pix::Sprite(0.0f, 0.0f, 4.0f, 4.0f, glm::vec4(1.0f, 1.0f, 1.0f, 0.51f)));
-
-
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    layer0.add(group0);
 
     window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    Pix::Timer timer;
     while(window.running){
         window.clear();
            layer0.render();
-           layer1.render();
         window.update();
         timer.logFPS();
     }
