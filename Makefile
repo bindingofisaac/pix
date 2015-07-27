@@ -3,7 +3,7 @@ SRC=$(wildcard src/*.cpp)
 OBJ=$(addprefix obj/,$(notdir $(SRC:.cpp=.o)))
 LD_FLAGS=`pkg-config freeimage glew sdl2 --libs` -framework OpenGL
 INCLUDES=-I include -std=gnu++11 `pkg-config freeimage glew sdl2 --cflags` -I /usr/local/Cellar/glm/0.9.5.3/include/
-DEBUG=-Wall -g
+DEBUG=-g
 
 all: dir bin/main
 

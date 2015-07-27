@@ -77,6 +77,7 @@ namespace Pix{
                     end();
                     flush();
                     begin();
+                    m_TextureSlots.clear(); // TODO check with more than 32 different textures
                 }
                 m_TextureSlots.push_back(tid);
                 tes = m_TextureSlots.size();
