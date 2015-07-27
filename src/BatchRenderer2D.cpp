@@ -21,10 +21,12 @@ namespace Pix{
         glBufferData(GL_ARRAY_BUFFER, RENDERER_BUFFER_SIZE, NULL, GL_DYNAMIC_DRAW);
 
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, 0);
-
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(3 * sizeof(GLfloat)));
+        glEnableVertexAttribArray(2);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, 0);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, uv)));
+        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, color)));
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -53,21 +55,27 @@ namespace Pix{
         const glm::vec4 &position = glm::vec4(renderable->getPosition(), 1);
         const glm::vec2 &size     = renderable->getSize();
         const glm::vec4 &color    = renderable->getColor();
+        const std::vector<glm::vec2> &uv       = renderable->getUV();
+
         glm::mat4 ts = m_TransformationStack.back();
 
         m_Buffer->vertex = (ts * position).xyz();
+        m_Buffer->uv     = uv[0];
         m_Buffer->color  = color;
         m_Buffer++;
 
         m_Buffer->vertex = (ts * glm::vec4(position.x, position.y + size.y, position.z, 1)).xyz();
+        m_Buffer->uv     = uv[1];
         m_Buffer->color  = color;
         m_Buffer++;
 
         m_Buffer->vertex = (ts * glm::vec4(position.x + size.x, position.y + size.y, position.z, 1)).xyz();
+        m_Buffer->uv     = uv[2];
         m_Buffer->color  = color;
         m_Buffer++;
 
         m_Buffer->vertex = (ts * glm::vec4(position.x + size.x, position.y, position.z, 1)).xyz();
+        m_Buffer->uv     = uv[3];
         m_Buffer->color  = color;
         m_Buffer++;
 
