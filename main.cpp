@@ -1,11 +1,12 @@
-#include <Window.hpp>
-#include <Shader.hpp>
 #include <Logger.hpp>
+#include <Window.hpp>
+#include <Timer.hpp>
+#include <Shader.hpp>
 #include <Sprite.hpp>
 #include <BatchRenderer2D.hpp>
-#include <Timer.hpp>
 #include <Layer2D.hpp>
 #include <Group.hpp>
+#include <Texture.hpp>
 
 int main(){
     Pix::Timer timer;
@@ -20,7 +21,10 @@ int main(){
 
     layer0.add(group0);
 
+    Pix::Texture texture("test.png");
+
     window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
     while(window.running){
         window.clear();
            layer0.render();
