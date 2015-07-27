@@ -14,12 +14,14 @@ namespace Pix{
             SDL_Event m_WindowEvent;
             const std::string m_Title;
             int m_Width, m_Height;
+            int m_Xpos, m_Ypos;
             
             void f_Create();
         public:
             Window(const std::string title, int width, int height);
             ~Window();
 
+            void getMousePosition(int &x,int &y);
             void setClearColor(float, float, float, float);
             void clear();
             void update();

@@ -11,6 +11,7 @@ out DATA{
   vec4 color;
   vec2 uv;
   float tid;
+  vec2 position;
 } vs_out;
 
 void main()
@@ -18,6 +19,7 @@ void main()
     vs_out.color = color;
     vs_out.uv    = uv;
     vs_out.tid   = tid;
+    vs_out.position = position.xy;
 
     gl_Position  = projection*vec4(position, 1.0);
 }

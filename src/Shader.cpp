@@ -70,4 +70,8 @@ namespace Pix{
     void Shader::disable(){
         glUseProgram(0);
     }
+
+    void Shader::setUniform2f(const std::string& name, const glm::vec2& vector){
+        glUniform2f(f_GetUniformLocation(name), vector.x, vector.y);
+    }
 }

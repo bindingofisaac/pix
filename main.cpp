@@ -49,8 +49,14 @@ int main(){
     layer0.add(group0);
     window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
+    SDL_ShowCursor(SDL_DISABLE);
+    int x, y;
     while(window.running){
         window.clear();
+           window.getMousePosition(x, y);
+           shader0->enable();
+           shader0->setUniform2f("light_pos", glm::vec2((float)(16*(x / 960.0f)), (float)(y *  9.0f / 540.0f))); 
+           shader0->disable();
            layer0.render();
         window.update();
         timer.logFPS();

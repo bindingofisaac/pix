@@ -18,6 +18,7 @@ namespace Pix{
         glewExperimental = GL_TRUE;
         glewInit();
         // TODO: check for errors
+
     }
 
     Window::Window(const std::string title, int width, int height) : m_Window(nullptr), m_Title(title), m_Width(width), m_Height(height), running(true){
@@ -43,9 +44,16 @@ namespace Pix{
         if(m_WindowEvent.type == SDL_QUIT){
             running = false;
         }
-
+        if(m_WindowEvent.type == SDL_MOUSEMOTION){
+            SDL_GetMouseState(&m_Xpos, &m_Ypos);
+        }
         // Should be removed only for debugging 
         SDL_GL_SetSwapInterval(0);
         SDL_GL_SwapWindow(m_Window);
+    }
+
+    void Window::getMousePosition(int &x, int &y){
+        x = m_Xpos;
+        y = m_Ypos;
     }
 }
