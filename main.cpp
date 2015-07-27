@@ -15,6 +15,7 @@ int main(){
     Pix::Shader *shader0 = new Pix::Shader("data/shaders/simple.vert", "data/shaders/simple.frag");
     Pix::Layer2D layer0(shader0);
     Pix::Group *group0 = new Pix::Group(glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0f))*glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0, 0, 1)));
+    Pix::Group *group1 = new Pix::Group(glm::scale(glm::mat4(1.0f), glm::vec3(0.5, 0.5, 0.0f))*glm::translate(glm::mat4(1.0f), glm::vec3(8.0f, 4.5f, 1)));
 
     GLint texids[32];
     for(int i=0;i<32;i++) texids[i] = i;
@@ -31,22 +32,24 @@ int main(){
     shader0->enable();
 
     //shader0->setUniformMat4("projection", glm::ortho(-1.0f, 17.0f, 10.0f, -1.0f));
-    
     shader0->setUniformMat4("projection", glm::ortho(0.0f, 16.0f, 9.0f, 0.0f));
+
     shader0->setUniform1iv("textures", texids, 32);
     shader0->disable();
 
-    for(float i=0;i<16;i+=2.0f){
-        for(float j=0;j<9;j+=2.0f){
-            //group0->add(new Pix::Sprite(i, j, 0.9f, 0.9f, glm::vec4(1,1,1,1)));
+    for(float i=0;i<16;i+=1.0f){
+        for(float j=0;j<9;j+=1.0f){
+            group0->add(new Pix::Sprite(i, j, 0.9f, 0.9f, glm::vec4(rand() % 1000 / 1000.0f, 0,1,1)));
         }
     }
 
-    group0->add(new Pix::Sprite(0.0f, 0.0f, 16.0f, 9.0f, tex[1]));
-    group0->add(new Pix::Sprite(8.0f, 4.5f, 8.0f, 4.5f, tex[2]));
-    group0->add(new Pix::Sprite(12.0f, 7.0f, 4.0f, 2.0f, tex[0]));
+    group1->add(new Pix::Sprite(0.0f, 0.0f, 16.0f, 9.0f, tex[1]));
+    group1->add(new Pix::Sprite(8.0f, 4.5f, 8.0f, 4.5f, tex[2]));
+    group1->add(new Pix::Sprite(12.0f, 7.0f, 4.0f, 2.0f, tex[0]));
 
     layer0.add(group0);
+    layer0.add(group1);
+
     window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
     SDL_ShowCursor(SDL_DISABLE);
