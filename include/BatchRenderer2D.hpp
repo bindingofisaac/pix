@@ -18,6 +18,7 @@ namespace Pix{
             IndexBuffer *m_IBO;
             VertexData *m_Buffer;
             GLuint m_IndexCount;
+            std::vector<GLuint> m_TextureSlots;
         public:
             BatchRenderer2D();
             ~BatchRenderer2D();

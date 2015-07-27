@@ -18,6 +18,7 @@ namespace Pix{
             Shader(const std::string&, const std::string&);
             ~Shader();
 
+            void setUniform1iv(const std::string& name, int *value, int count);
             void setUniformMat4(const std::string&, const glm::mat4&);
             void enable();
             void disable();

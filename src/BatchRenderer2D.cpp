@@ -1,4 +1,5 @@
 #include <BatchRenderer2D.hpp>
+#include <Logger.hpp>
 
 namespace Pix{
     BatchRenderer2D::BatchRenderer2D() : m_IndexCount(0){
@@ -23,10 +24,12 @@ namespace Pix{
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
         glEnableVertexAttribArray(2);
+        glEnableVertexAttribArray(3);
 
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, 0);
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, uv)));
-        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, color)));
+        glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, tid)));
+        glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(offsetof(VertexData, color)));
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -56,26 +59,51 @@ namespace Pix{
         const glm::vec2 &size     = renderable->getSize();
         const glm::vec4 &color    = renderable->getColor();
         const std::vector<glm::vec2> &uv       = renderable->getUV();
-
+        const GLuint tid = renderable->getTID();
         glm::mat4 ts = m_TransformationStack.back();
+        float tes = 0.0f;
+        if(tid > 0){
+            bool  found = false;
+            for(int i=0; i<m_TextureSlots.size(); i++){
+                if(m_TextureSlots[i] == tid){
+                    tes = i+1;
+                    found = true;
+                    break;
+                }
+            }
+
+            if(!found){
+                if(m_TextureSlots.size() >= 32){
+                    end();
+                    flush();
+                    begin();
+                }
+                m_TextureSlots.push_back(tid);
+                tes = m_TextureSlots.size();
+            }
+        }
 
         m_Buffer->vertex = (ts * position).xyz();
         m_Buffer->uv     = uv[0];
+        m_Buffer->tid    = tes;
         m_Buffer->color  = color;
         m_Buffer++;
 
         m_Buffer->vertex = (ts * glm::vec4(position.x, position.y + size.y, position.z, 1)).xyz();
         m_Buffer->uv     = uv[1];
+        m_Buffer->tid    = tes;
         m_Buffer->color  = color;
         m_Buffer++;
 
         m_Buffer->vertex = (ts * glm::vec4(position.x + size.x, position.y + size.y, position.z, 1)).xyz();
         m_Buffer->uv     = uv[2];
+        m_Buffer->tid    = tes;
         m_Buffer->color  = color;
         m_Buffer++;
 
         m_Buffer->vertex = (ts * glm::vec4(position.x + size.x, position.y, position.z, 1)).xyz();
         m_Buffer->uv     = uv[3];
+        m_Buffer->tid    = tes;
         m_Buffer->color  = color;
         m_Buffer++;
 
@@ -88,11 +116,16 @@ namespace Pix{
     }
 
     void BatchRenderer2D::flush(){
+        for(int i=0;i<m_TextureSlots.size(); i++){
+            glActiveTexture(GL_TEXTURE0 + i);
+            glBindTexture(GL_TEXTURE_2D, m_TextureSlots[i]);
+        }
         glBindVertexArray(m_VAO);
         m_IBO->bind();
         glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_SHORT, 0);
         m_IBO->unbind();
         glBindVertexArray(0);
+
         m_IndexCount = 0;
     }
 }
