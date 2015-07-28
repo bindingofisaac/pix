@@ -23,8 +23,8 @@ namespace Pix{
             BatchRenderer2D();
             ~BatchRenderer2D();
 
-            void begin();
-            void end();
+            void begin() override;
+            void end() override;
             void init();
             void submit(const Renderable2D* renderable) override;
             void flush() override;
