@@ -2,6 +2,7 @@
 
 #include <Renderer2D.hpp>
 #include <Renderable2D.hpp>
+#include <freetype-gl.h>
 #include <cstddef>
 
 namespace Pix{
@@ -19,6 +20,9 @@ namespace Pix{
             VertexData *m_Buffer;
             GLuint m_IndexCount;
             std::vector<GLuint> m_TextureSlots;
+
+            ftgl::texture_atlas_t *m_FTAtlas;
+            ftgl::texture_font_t  *m_FTFont;
         public:
             BatchRenderer2D();
             ~BatchRenderer2D();
@@ -27,6 +31,7 @@ namespace Pix{
             void end() override;
             void init();
             void submit(const Renderable2D* renderable) override;
+            void drawString(const std::string &text, glm::vec3 position, glm::vec4 color) override;
             void flush() override;
     };
 }

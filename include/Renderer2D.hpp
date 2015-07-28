@@ -19,6 +19,8 @@ namespace Pix{
             virtual void submit(const Renderable2D *renderable) = 0;
             virtual void flush() = 0;
 
+            virtual void drawString(const std::string &text, glm::vec3 position, glm::vec4 color) = 0;
+
             void push(glm::mat4 matrix, bool overide = false){
                 if(overide){
                     m_TransformationStack.push_back(matrix);

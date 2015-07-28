@@ -18,7 +18,9 @@ namespace Pix{
         glewExperimental = GL_TRUE;
         glewInit();
         // TODO: check for errors
-
+        //
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     Window::Window(const std::string title, int width, int height) : m_Window(nullptr), m_Title(title), m_Width(width), m_Height(height), running(true){

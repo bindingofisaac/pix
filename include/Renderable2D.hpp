@@ -34,7 +34,7 @@ namespace Pix{
             Renderable2D(){ setDefaultUV(); m_Texture = nullptr; }
         public:
             Renderable2D(glm::vec3 position, glm::vec2 size, glm::vec4 color)  : m_Position(position), m_Size(size), m_Color(color) { setDefaultUV(); m_Texture= nullptr; }
-            Renderable2D(glm::vec3 position, glm::vec2 size, Texture *texture) : m_Position(position), m_Size(size), m_Texture(texture) { setDefaultUV(); }
+            Renderable2D(glm::vec3 position, glm::vec2 size, Texture *texture) : m_Position(position), m_Size(size), m_Texture(texture), m_Color(glm::vec4(1)){ setDefaultUV(); }
 
             virtual ~Renderable2D(){
             }

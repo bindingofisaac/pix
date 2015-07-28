@@ -8,6 +8,8 @@ namespace Pix{
 
     BatchRenderer2D::~BatchRenderer2D(){
         delete m_IBO;
+        delete m_FTFont;
+        delete m_FTAtlas;
         glDeleteBuffers(1, &m_VBO);
         glDeleteVertexArrays(1, &m_VAO);
     }
@@ -47,6 +49,8 @@ namespace Pix{
         m_IBO = new IndexBuffer(indices, RENDERER_INDICES_SIZE);
 
         glBindVertexArray(0);
+        m_FTAtlas = ftgl::texture_atlas_new(512, 512, 3);
+        m_FTFont  = ftgl::texture_font_new_from_file(m_FTAtlas, 80, "arial.ttf");
     }
 
     void BatchRenderer2D::begin(){
@@ -128,5 +132,78 @@ namespace Pix{
         glBindVertexArray(0);
 
         m_IndexCount = 0;
+    }
+
+    void BatchRenderer2D::drawString(const std::string &text, glm::vec3 position, glm::vec4 color){
+        using namespace ftgl;
+
+        float tes = 0.0f;
+        bool  found = false;
+        for(int i=0; i<m_TextureSlots.size(); i++){
+            if(m_TextureSlots[i] == m_FTAtlas->id){
+                tes = i+1;
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            if(m_TextureSlots.size() >= 32){
+                end();
+                flush();
+                begin();
+                m_TextureSlots.clear(); // TODO check with more than 32 different textures
+            }
+            m_TextureSlots.push_back(m_FTAtlas->id);
+            tes = m_TextureSlots.size();
+        }
+
+        float scalex = 960.0f / 16.0f;
+        float scaley = 960.0f / 9.0f;
+
+        glm::mat4 ts = m_TransformationStack.back();
+
+        float x = position.x;
+        for(int i=0;i<text.length();i++){
+            char c = text.at(i);
+            texture_glyph_t *glyph = texture_font_get_glyph(m_FTFont, c);
+            if(glyph){
+                float x0 = x + glyph->offset_x/scalex;
+                float y0 = position.y-glyph->offset_y/scaley+m_FTFont->height/scaley;
+                float x1 = x0 + glyph->width/scalex;
+                float y1 = y0 + glyph->height/scaley;
+
+                float u0 = glyph->s0;
+                float v0 = glyph->t0;
+                float u1 = glyph->s1;
+                float v1 = glyph->t1;
+
+                m_Buffer->vertex = (ts*glm::vec4(glm::vec3(x0, y0, 0), 1)).xyz();
+                m_Buffer->uv     = glm::vec2(u0, v0);
+                m_Buffer->tid    = tes;
+                m_Buffer->color  = color;
+                m_Buffer++;
+
+                m_Buffer->vertex = (ts*glm::vec4(glm::vec3(x0, y1, 0), 1)).xyz();
+                m_Buffer->uv     = glm::vec2(u0, v1);
+                m_Buffer->tid    = tes;
+                m_Buffer->color  = color;
+                m_Buffer++;
+
+                m_Buffer->vertex = (ts*glm::vec4(glm::vec3(x1, y1, 0), 1)).xyz();
+                m_Buffer->uv     = glm::vec2(u1, v1);
+                m_Buffer->tid    = tes;
+                m_Buffer->color  = color;
+                m_Buffer++;
+
+                m_Buffer->vertex = (ts*glm::vec4(glm::vec3(x1, y0, 0), 1)).xyz();
+                m_Buffer->uv     = glm::vec2(u1, v0);
+                m_Buffer->tid    = tes;
+                m_Buffer->color  = color;
+                m_Buffer++;
+
+                m_IndexCount += 6;
+                x += glyph->advance_x/scalex;
+            }
+        }
     }
 }
