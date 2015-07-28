@@ -4,3 +4,5 @@ doc/
 *.jpg
 *.png
 *.gif
+*.py
+*.pyc
