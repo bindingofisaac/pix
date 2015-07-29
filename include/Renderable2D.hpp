@@ -31,7 +31,7 @@ namespace Pix{
             glm::vec4 m_Color;
             Texture *m_Texture;
             std::vector <glm::vec2> m_UV;
-            Renderable2D(){ setDefaultUV(); m_Texture = nullptr; }
+            Renderable2D() : m_Color(glm::vec4(1)){ setDefaultUV(); m_Texture = nullptr; }
         public:
             Renderable2D(glm::vec3 position, glm::vec2 size, glm::vec4 color)  : m_Position(position), m_Size(size), m_Color(color) { setDefaultUV(); m_Texture= nullptr; }
             Renderable2D(glm::vec3 position, glm::vec2 size, Texture *texture) : m_Position(position), m_Size(size), m_Texture(texture), m_Color(glm::vec4(1)){ setDefaultUV(); }

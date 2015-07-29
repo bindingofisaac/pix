@@ -10,6 +10,10 @@ namespace Pix{
         renderer->drawString(m_Text, m_Position, m_Color);
     }
 
+    void Label::setText(std::string text){
+        m_Text = text;
+    }
+
     Label::~Label(){
     }
 }

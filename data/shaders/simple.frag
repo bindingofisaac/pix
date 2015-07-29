@@ -37,6 +37,6 @@ void main(){
         else if ( tid == 15) { texColor = texture ( textures[15], uv); }
     }
     float intensity = smoothstep(-4.0, 4.0, (4.0 - length(fs_in.position - light_pos))); 
-    //color = fs_in.color*texColor*intensity;
-    color = fs_in.color*vec4(texColor.rgb, texColor.r);
+    vec4 tColor = fs_in.color*texColor;
+    color = vec4(tColor.rgb*intensity, clamp((tColor.r+tColor.b+tColor.b)*(fs_in.color.r+fs_in.color.g+fs_in.color.b), 0.0, 1));
 }

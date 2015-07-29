@@ -26,5 +26,8 @@ namespace Pix{
             void clear();
             void update();
             bool running;
+
+            inline float getWidth(){ return m_Width; }
+            inline float getHeight(){ return m_Height; }
     };
 }

@@ -2,6 +2,8 @@
 
 #include<SDL/SDL.h>
 #include<cstdlib>
+#include<Logger.hpp>
+#include<Label.hpp>
 
 namespace Pix{
     class Timer{
@@ -24,11 +26,11 @@ namespace Pix{
                 return current - m_Start;
             }
 
-            void logFPS(){
+            void logFPS(Label *fps){
                 m_Frames++;
                 if(elapsed() - m_Timer > 1000) {
                     m_Timer += 1000;
-                    logger<<m_Frames<<" FPS\n";
+                    fps->setText(std::to_string(m_Frames)+" FPS");
                     m_Frames = 0;
                 }
             }

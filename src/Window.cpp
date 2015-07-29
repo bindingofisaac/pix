@@ -1,4 +1,5 @@
 #include <Window.hpp>
+#include <Logger.hpp>
 
 namespace Pix{
     void Window::f_Create(){
@@ -9,7 +10,7 @@ namespace Pix{
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 
-        m_Window = SDL_CreateWindow(m_Title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_Width, m_Height, SDL_WINDOW_OPENGL);
+        m_Window = SDL_CreateWindow(m_Title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_Width, m_Height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
         // TODO: check for errors
 
         m_Context = SDL_GL_CreateContext(m_Window);
@@ -48,6 +49,10 @@ namespace Pix{
         }
         if(m_WindowEvent.type == SDL_MOUSEMOTION){
             SDL_GetMouseState(&m_Xpos, &m_Ypos);
+        }
+        if(m_WindowEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED){
+            SDL_GetWindowSize(m_Window, &m_Width, & m_Height);
+            glViewport(0, 0, m_Width, m_Height);
         }
         // Should be removed only for debugging 
         SDL_GL_SetSwapInterval(0);

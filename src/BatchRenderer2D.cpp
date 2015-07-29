@@ -50,7 +50,7 @@ namespace Pix{
 
         glBindVertexArray(0);
         m_FTAtlas = ftgl::texture_atlas_new(512, 512, 3);
-        m_FTFont  = ftgl::texture_font_new_from_file(m_FTAtlas, 80, "arial.ttf");
+        m_FTFont  = ftgl::texture_font_new_from_file(m_FTAtlas, 16, "arial.ttf");
     }
 
     void BatchRenderer2D::begin(){
@@ -157,8 +157,8 @@ namespace Pix{
             tes = m_TextureSlots.size();
         }
 
-        float scalex = 960.0f / 16.0f;
-        float scaley = 960.0f / 9.0f;
+        float scalex = 960.0f / 32.0f;
+        float scaley = 960.0f / 18.0f;
 
         glm::mat4 ts = m_TransformationStack.back();
 

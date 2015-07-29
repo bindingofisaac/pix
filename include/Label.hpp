@@ -9,6 +9,7 @@ namespace Pix{
         public:
             Label(std::string text, float x, float y, glm::vec4 color);
             virtual void submit(Renderer2D *renderer) const override;
+            void setText(std::string text);
             ~Label();
     };
 }

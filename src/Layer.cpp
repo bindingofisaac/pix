@@ -21,9 +21,7 @@ namespace Pix{
         for(const Renderable2D* renderable : m_Renderables){
             renderable->submit(m_Renderer);
         }
-        m_Renderer->drawString("Hello", glm::vec3(0, 0, 0), glm::vec4(0,1,1,1));
         m_Renderer->end();
-
         m_Shader->enable();
         m_Renderer->flush();
         m_Shader->disable();
