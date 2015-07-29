@@ -1,71 +1,49 @@
-#include <Logger.hpp>
 #include <Window.hpp>
-#include <Timer.hpp>
-#include <Shader.hpp>
-#include <Sprite.hpp>
-#include <BatchRenderer2D.hpp>
 #include <Layer2D.hpp>
 #include <Group.hpp>
+#include <Shader.hpp>
+#include <Sprite.hpp>
 #include <Texture.hpp>
-#include <Label.hpp>
+
+using namespace Pix;
 
 int main(){
-    Pix::Window window("test game", 960, 540);
-    Pix::Timer timer;
+    Window window("RPG UI", 960, 540);
+    window.setClearColor(1, 1, 1, 1);
 
-    Pix::Shader *shader0 = new Pix::Shader("data/shaders/simple.vert", "data/shaders/simple.frag");
-    Pix::Layer2D layer0(shader0);
-    Pix::Group *group0 = new Pix::Group(glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0f))*glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0, 0, 1)));
-    Pix::Group *group1 = new Pix::Group(glm::scale(glm::mat4(1.0f), glm::vec3(0.5, 0.5, 0.0f))*glm::translate(glm::mat4(1.0f), glm::vec3(8.0f, 4.5f, 1)));
-    Pix::Group *group2 = new Pix::Group(glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0f))*glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0, 0, 1)));
-
+    Shader *genShader = new Shader("data/shaders/simple.vert", "data/shaders/simple.frag");
     GLint texids[32];
-    for(int i=0;i<32;i++) texids[i] = i;
+    for(int i(0); i<32;i++) texids[i] = i;
+    genShader->enable();
+    genShader->setUniform1iv("textures", texids, 32);
+    genShader->disable();
 
-    Pix::Texture *texture0 = new Pix::Texture("test0.png");
-    Pix::Texture *texture1 = new Pix::Texture("test1.jpg");
-    Pix::Texture *texture2 = new Pix::Texture("test2.jpg");
+    Layer2D uilayer(genShader);
+    Group *uigroup = new Group(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.0,0.0)));
 
+    //uigroup->add(new Sprite(0 , 0    , 16 , 9 , new Texture("data/rpgui/background.png")));
+    uigroup->add(new Sprite(0   , 0    , 4  , 2 , new Texture("data/rpgui/player.png")));
+    uigroup->add(new Sprite(14  , 0.1f , 2  , 2 , new Texture("data/rpgui/map.png")));
+    uigroup->add(new Sprite(4   , 1    , 8  , 3 , new Texture("data/rpgui/logo.png")));
 
-    std::vector<Pix::Texture*> tex;
-    tex.push_back(texture0);
-    tex.push_back(texture1);
-    tex.push_back(texture2);
+    uigroup->add(new Sprite(4, 4, 4, 2, new Texture("data/rpgui/continue.png")));
+    uigroup->add(new Sprite(8, 4, 4, 2, new Texture("data/rpgui/newgame.png")));
 
-    shader0->enable();
+    uigroup->add(new Sprite(4, 6, 8, 1, new Texture("data/rpgui/exp.png")));
 
-    shader0->setUniformMat4("projection", glm::ortho(0.0f, 16.0f, 9.0f, 0.0f));
-    shader0->setUniform1iv("textures", texids, 32);
-    shader0->disable();
+    uigroup->add(new Sprite(1, 7, 2, 2, new Texture("data/rpgui/health.png")));
+    uigroup->add(new Sprite(4, 7, 2, 2, new Texture("data/rpgui/mana.png")));
 
-    for(float i=0;i<16;i+=1.0f){
-        for(float j=0;j<9;j+=1.0f){
-            group0->add(new Pix::Sprite(i, j, 0.9f, 0.9f, glm::vec4(rand() % 1000 / 1000.0f,rand() % 1000 / 1000.0f,rand() % 1000 / 1000.0f,1)));
-        }
-    }
-    Pix::Label* label = new Pix::Label("", 0.5f, 0.25f, glm::vec4(1,1,1,1));
-    group1->add(new Pix::Sprite(0.0f, 0.0f, 16.0f, 9.0f, tex[1]));
-    group2->add(new Pix::Sprite(0.0f, 0.0f, 3.5f,  1.0f, glm::vec4(0, 0, 0, 0.9)));
-    group2->add(label);
-
-    layer0.add(group0);
-    layer0.add(group1);
-    layer0.add(group2);
-
-    window.setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    uigroup->add(new Sprite(7, 7, 5, 2, new Texture("data/rpgui/dialogue.png")));
+    uigroup->add(new Sprite(14, 7, 2, 2, new Texture("data/rpgui/treasure.png")));
 
 
-    //SDL_ShowCursor(SDL_DISABLE);
-    int x, y;
+    uilayer.add(uigroup);
+
     while(window.running){
         window.clear();
-           window.getMousePosition(x, y);
-           shader0->enable();
-           shader0->setUniform2f("light_pos", glm::vec2((float)(16*(x/window.getWidth())), (float)(y* 9.0f/window.getHeight()))); 
-           shader0->disable();
-           layer0.render();
+        uilayer.render();
         window.update();
-        timer.logFPS(label);
     }
     return 0;
 }

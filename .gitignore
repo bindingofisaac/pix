@@ -1,9 +1,6 @@
 bin/
 obj/
 doc/
-*.jpg
-*.png
-*.gif
 *.py
 *.pyc
 *.ttf

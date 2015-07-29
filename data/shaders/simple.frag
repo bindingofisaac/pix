@@ -15,8 +15,8 @@ uniform sampler2D textures[32];
 
 void main(){
     vec4 texColor = fs_in.color;
-    //vec2 uv = vec2(fs_in.uv.x, 1-fs_in.uv.y);
-    vec2 uv = fs_in.uv;
+    vec2 uv = vec2(fs_in.uv.x, 1-fs_in.uv.y);
+    //vec2 uv = fs_in.uv;
     if(fs_in.tid > 0.0){
         int tid = int(fs_in.tid-0.5);
         if      ( tid == 0)  { texColor = texture ( textures[0], uv);  }
@@ -37,6 +37,6 @@ void main(){
         else if ( tid == 15) { texColor = texture ( textures[15], uv); }
     }
     float intensity = smoothstep(-4.0, 4.0, (4.0 - length(fs_in.position - light_pos))); 
-    vec4 tColor = fs_in.color*texColor;
-    color = vec4(tColor.rgb*intensity, clamp((tColor.r+tColor.b+tColor.b)*(fs_in.color.r+fs_in.color.g+fs_in.color.b), 0.0, 1));
+    color = fs_in.color*texColor;
+    //color = vec4(tColor.rgb*intensity, clamp((tColor.r+tColor.b+tColor.b)*(fs_in.color.r+fs_in.color.g+fs_in.color.b), 0.0, 1));
 }
