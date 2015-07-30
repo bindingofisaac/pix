@@ -1,8 +1,9 @@
 #pragma once
 
-#include <string>
-#include <GL/glew.h>
+
+#include <OpenGL.hpp>
 #include <ImageLoad.hpp>
+#include <string>
 
 namespace Pix{
     class Texture{

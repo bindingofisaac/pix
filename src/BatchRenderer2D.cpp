@@ -1,5 +1,4 @@
 #include <BatchRenderer2D.hpp>
-#include <Logger.hpp>
 
 namespace Pix{
     BatchRenderer2D::BatchRenderer2D() : m_IndexCount(0){

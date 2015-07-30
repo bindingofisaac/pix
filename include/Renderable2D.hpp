@@ -1,13 +1,15 @@
 #pragma once
 
+
 #define GLM_SWIZZLE
-#include <GL/glew.h>
-#include <Buffers.hpp>
 #include <glm/glm.hpp>
 
-#include <vector>
+#include <OpenGL.hpp>
+
+#include <Buffers.hpp>
 #include <Renderer2D.hpp>
 #include <Texture.hpp>
+#include <vector>
 
 namespace Pix{
     struct VertexData{

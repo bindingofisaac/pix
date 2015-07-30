@@ -1,5 +1,4 @@
 #include <Window.hpp>
-#include <Logger.hpp>
 
 namespace Pix{
     void Window::f_Create(){
